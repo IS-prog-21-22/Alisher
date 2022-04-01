@@ -1,0 +1,14 @@
+﻿  Source.cpp
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(60,27): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(62,50): warning C4244: аргумент: преобразование "_Ty" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+          with
+          [
+              _Ty=double
+          ]
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(131,26): warning C4244: аргумент: преобразование "double" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(133,26): warning C4244: аргумент: преобразование "double" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(134,26): warning C4244: аргумент: преобразование "double" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(139,44): warning C4244: аргумент: преобразование "double" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+C:\Working\work\Working\PR\2s\2\Project1\Project1\Source.cpp(140,26): warning C4244: аргумент: преобразование "double" в "nlohmann::basic_json<std::map,std::vector,std::string,bool,int64_t,uint64_t,double,std::allocator,nlohmann::adl_serializer,std::vector<uint8_t,std::allocator<uint8_t>>>::size_type", возможна потеря данных
+LINK : warning LNK4098: библиотека по умолчанию "MSVCRT" конфликтует с использованием других библиотек; используйте /NODEFAULTLIB:library
+  Project1.vcxproj -> C:\Working\work\Working\PR\2s\2\Project1\Debug\Project1.exe
