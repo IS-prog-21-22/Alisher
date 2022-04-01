@@ -5,12 +5,12 @@ class triangle : public polygon
 private:
     virtual bool rule()
     {
-        if (size_dot_ != 4)
+        if (arr_dot_.size() != 4)
         {
             std::cout << "*ERROR! THIS BROKEN LINE NEED TO HAVE ONLY THREE SEGMENT\n";
             return false;
         }
-        if (arr_dot_[0].get_x() != arr_dot_[size_dot_ - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[size_dot_ - 1].get_y())
+        if (arr_dot_[0].get_x() != arr_dot_[arr_dot_.size() - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[arr_dot_.size() - 1].get_y())
         {
             std::cout << "*ERROR! THIS BROKEN LINE NOT CLOSED\n";
             return false;
@@ -23,32 +23,26 @@ public:
     triangle(std::vector <dot>& arr_dot)
     {
         arr_dot_ = arr_dot;
-        size_dot_ = arr_dot.size();
     }
     triangle(closed_broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     triangle(broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     triangle(polygon& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     triangle(triangle& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     void operator = (triangle& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
 };
 /////////////
@@ -59,7 +53,7 @@ private:
     bool parallel(dot& a1, dot& a2, dot& b1, dot& b2)
     {
         double k2 = b2.get_y() - b1.get_y();
-        int ch=b2.get_x() - b1.get_x();
+        double ch=b2.get_x() - b1.get_x();
         k2 /= ch;
 
         double k1 = a2.get_y() - a1.get_y();
@@ -72,12 +66,12 @@ private:
     }
     virtual bool rule()
     {
-        if (size_dot_ != 4)
+        if (arr_dot_.size() != 4)
         {
             std::cout << "*ERROR! THIS BROKEN LINE NEED TO HAVE ONLY THREE SEGMENT\n";
             return false;
         }
-        if (arr_dot_[0].get_x() != arr_dot_[size_dot_ - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[size_dot_ - 1].get_y())
+        if (arr_dot_[0].get_x() != arr_dot_[arr_dot_.size() - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[arr_dot_.size() - 1].get_y())
         {
             std::cout << "*ERROR! THIS BROKEN LINE NOT CLOSED\n";
             return false;
@@ -92,8 +86,8 @@ private:
             return false;
         }
 
-        if (size_dot_ > 4)
-            for (int i = 2; i < size_dot_ - 1; i++)
+        if (arr_dot_.size() > 4)
+            for (int i = 2; i < arr_dot_.size() - 1; i++)
             {
                 for (int j = 0; j < i; j++)
                 {
@@ -115,32 +109,26 @@ public:
     trapezoid(std::vector <dot>& arr_dot)
     {
         arr_dot_ = arr_dot;
-        size_dot_ = arr_dot.size();
     }
     trapezoid(closed_broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     trapezoid(broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     trapezoid(polygon& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     trapezoid(trapezoid& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     void operator = (trapezoid& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
 };
 ////////////////
@@ -151,13 +139,13 @@ private:
 
     virtual bool rule()
     {
-        if (size_dot_ != 4)
+        if (arr_dot_.size() != 4)
         {
             std::cout << "*ERROR! THIS BROKEN LINE NEED TO HAVE ONLY THREE SEGMENT\n";
             return false;
         }
 
-        if (arr_dot_[0].get_x() != arr_dot_[size_dot_ - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[size_dot_ - 1].get_y())
+        if (arr_dot_[0].get_x() != arr_dot_[arr_dot_.size() - 1].get_x() || arr_dot_[0].get_y() != arr_dot_[arr_dot_.size() - 1].get_y())
         {
             std::cout << "*ERROR! THIS BROKEN LINE NOT CLOSED\n";
             return false;
@@ -167,7 +155,7 @@ private:
         new_dots[0]=arr_dot_[0];
         new_dots[1]=arr_dot_[1];
         broken_line b_line(new_dots);
-        int line_length=b_line.length();
+        double line_length=b_line.length();
         for (int i=1; i<3; i++)
         {
             new_dots[0]=arr_dot_[i];
@@ -188,31 +176,25 @@ public:
     right_triangle(std::vector <dot>& arr_dot)
     {
         arr_dot_ = arr_dot;
-        size_dot_ = arr_dot.size();
     }
     right_triangle(closed_broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     right_triangle(broken_line& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     right_triangle(polygon& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     right_triangle(right_triangle& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
     void operator = (right_triangle& other)
     {
         arr_dot_ = other.get_arr();
-        size_dot_ = other.size_dot_;
     }
 };

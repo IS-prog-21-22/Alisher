@@ -1,7 +1,7 @@
 class dot
 {
 protected:
-    int x_=0, y_=0;
+    double x_=0, y_=0;
 public:
     dot ()
     {}
@@ -18,7 +18,7 @@ public:
         x_=other.x_;
         y_=other.y_;
     }
-    void set_O (int x, int y)
+    void set_O (double x, double y)
     {
         x_=x;
         y_=y;

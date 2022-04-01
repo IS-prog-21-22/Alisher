@@ -10,10 +10,10 @@ protected:
         dot v2(a1.get_x()-b2.get_x(), a1.get_y()-b2.get_y());
         dot v3(b1.get_x()-a2.get_x(), b1.get_y()-a2.get_y());
 
-        int angle1=va.get_x()*v1.get_y()-va.get_y()*v1.get_x();
-        int angle2=va.get_x()*v2.get_y()-va.get_y()*v2.get_x();
-        int angle3=vb.get_x()*v1.get_y()-vb.get_y()*v1.get_x();
-        int angle4=vb.get_x()*v3.get_y()-vb.get_y()*v3.get_x();
+        double angle1=va.get_x()*v1.get_y()-va.get_y()*v1.get_x();
+        double angle2=va.get_x()*v2.get_y()-va.get_y()*v2.get_x();
+        double angle3=vb.get_x()*v1.get_y()-vb.get_y()*v1.get_x();
+        double angle4=vb.get_x()*v3.get_y()-vb.get_y()*v3.get_x();
 
         if (angle1*angle2<0 && angle3*angle4<0)
             return true;
@@ -23,18 +23,18 @@ protected:
     }
     virtual bool rule ()
     {
-        if (size_dot_<4)
+        if (arr_dot_.size()<4)
         {
             std::cout << "*ERROR! THIS BROKEN LINE NEED TO HAVE THREE SEGMENT\n";
             return false;
         }
-        if (arr_dot_[0].get_x()!=arr_dot_[size_dot_-1].get_x() || arr_dot_[0].get_y()!=arr_dot_[size_dot_-1].get_y())
+        if (arr_dot_[0].get_x()!=arr_dot_[arr_dot_.size()-1].get_x() || arr_dot_[0].get_y()!=arr_dot_[arr_dot_.size()-1].get_y())
         {
             std::cout<<"*ERROR! THIS BROKEN LINE NOT CLOSED\n";
             return false;
         }
-        if (size_dot_>4)
-            for (int i=2; i<size_dot_-1; i++)
+        if (arr_dot_.size()>4)
+            for (int i=2; i<arr_dot_.size()-1; i++)
             {
                 for (int j=0; j<i; j++)
                 {
@@ -55,40 +55,35 @@ public:
     polygon (std::vector <dot> &arr_dot)
     {
         arr_dot_=arr_dot;
-        size_dot_=arr_dot.size();
     }
     polygon (closed_broken_line &other)
     {
         arr_dot_=other.get_arr();
-        size_dot_=other.size_dot_;
     }
     polygon (broken_line &other)
     {
         arr_dot_=other.get_arr();
-        size_dot_=other.size_dot_;
     }
     polygon (polygon &other)
     {
         arr_dot_=other.arr_dot_;
-        size_dot_=other.size_dot_;
     }
     void operator = (polygon &other)
     {
         arr_dot_=other.get_arr();
-        size_dot_=other.size_dot_;
     }
-    int square()
+    double square()
     {
         if (!rule())
             return -1;
-        int s=0;
-        for (int i=0; i<size_dot_-1; i++)
+        double s=0;
+        for (int i=0; i<arr_dot_.size()-1; i++)
             s+=arr_dot_[i].get_x()*arr_dot_[i+1].get_y();
-        s+=arr_dot_[size_dot_-1].get_x()*arr_dot_[0].get_y();
-        for (int i=0; i<size_dot_-1; i++)
+        s+=arr_dot_[arr_dot_.size()-1].get_x()*arr_dot_[0].get_y();
+        for (int i=0; i<arr_dot_.size()-1; i++)
             s-=arr_dot_[i+1].get_x()*arr_dot_[i].get_y();
-        s-=arr_dot_[0].get_x()*arr_dot_[size_dot_-1].get_y();
+        s-=arr_dot_[0].get_x()*arr_dot_[arr_dot_.size()-1].get_y();
         s/=2;
-        return s<0 ? s*=-1 : s;
+        return abs(s);
     } 
 };
