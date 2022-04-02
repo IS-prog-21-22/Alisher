@@ -48,26 +48,7 @@ private:
     double mean[country_number];
     int mean_number[country_number];
 
-    json friquent;
-
-    std::vector<std::vector <double>> friq_val;
-
-    double found_max_friquent(int it)
-    {
-        int max_num=0;
-        double max_val=0;
-
-        for (int i = 0; i < friq_val[it].size(); i++)
-        {
-            int num = friquent[it][friq_val[it][i]]["number"];
-            if (num > max_num)
-            {
-                max_num = num;
-                max_val = friq_val[it][i];
-            }
-        };
-        return max_val;
-    }
+    std::vector <std::vector <double>> median;
 
 public:
     finish_data()
@@ -77,7 +58,8 @@ public:
             mean[i] = 0;
             mean_number[i] = 0;
         }
-        friq_val.resize(country_number);
+
+        median.resize(country_number);
     }
 
     ~finish_data()
@@ -114,7 +96,7 @@ public:
         for (int i = 0; i < country_number; i++)
         {
             std::cout << "|" << count[i] << "|";
-            std::cout <<  found_max_friquent(i) << "\t|";
+            std::cout <<  median[i][median[i].size()/2] << "\t|";
             next_data_mean;
         }
     }
@@ -127,18 +109,18 @@ public:
 
     void go_friquent_value(int it)
     {
-        double data = jsonData["Valute"][count[it]]["Value"];
-        if (friquent[it][data]["find"] != 1)
+        double value=jsonData["Valute"][count[it]]["Value"];
+        median[it].push_back(value);
+
+        int i = median[it].size()-2;
+
+        while ( i>0 && value < median[it][i])
         {
-            friquent[it][data]["find"] = 1;
-            friquent[it][data]["number"] = 1;
-            friq_val[it].push_back(data);
+            median[it][i + 1] = median[it][i];
+            i--;
         }
-        else
-        {
-            double new_data = friquent[it][data]["number"] + 1;
-            friquent[it][data]["number"]=new_data;
-        }
+
+        median[it][i + 1] = value;
     }
 };
 
@@ -199,6 +181,13 @@ int main() {
 
     const std::string url("https://www.cbr-xml-daily.ru/daily_json.js");
 
+    
+
+    bool _end=false;
+
+
+    while (true)
+    {
     CURL* curl = curl_easy_init();
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -222,15 +211,10 @@ int main() {
 
     jsonData = json::parse(httpData->begin(), httpData->end());
 
-    bool _end=false;
-
-
-    while (true)
-    {
-        std::cout << "Press 'ESC' to end.\n";
-        print_data();
-        waiting(10);
-        system("cls");
+    std::cout << "Press 'ESC' to end.\n";
+    print_data();
+    waiting(10);
+    system("cls");
     }
 
     return 0;
