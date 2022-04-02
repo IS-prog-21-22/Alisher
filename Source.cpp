@@ -6,15 +6,18 @@
 #include <curl/curl.h>
 #include "json/include/nlohmann/json.hpp"
 #include <windows.h>
+#include <cmath>
 
 #define next_data next_data_(66);
 #define next_data_mean next_data_(16);
 
-#define country_number 35
+#define country_number 34
+#define max_co -1
 
 std::string count [country_number] = { "AUD", "AZN", "GBP", "AMD", "BYN", "BGN", "BRL", "HUF", "HKD", 
 "DKK", "USD", "EUR", "INR", "KZT", "CAD", "KGS", "CNY", "MDL", "NOK", "PLN", "RON", "XDR", "SGD", "TJS", 
-"TRY", "TMT", "TRY", "UZS", "UAH", "CZK", "SEK", "CHF", "ZAR", "KRW", "JPY"};
+"TRY", "TMT", "UZS", "UAH", "CZK", "SEK", "CHF", "ZAR", "KRW", "JPY"};
+
 
 void next_data_(int n)
 {
@@ -47,8 +50,9 @@ class finish_data
 private:
     double mean[country_number];
     int mean_number[country_number];
+    std::vector <int> max_key;
 
-    std::vector <std::vector <double>> median;
+    std::vector <std::vector <std::vector <double>>> median;
 
 public:
     finish_data()
@@ -58,8 +62,8 @@ public:
             mean[i] = 0;
             mean_number[i] = 0;
         }
-
-        median.resize(country_number);
+        max_key.resize(country_number, max_co);
+        median.resize(country_number, std::vector <std::vector <double>> (100000));
     }
 
     ~finish_data()
@@ -95,8 +99,26 @@ public:
 
         for (int i = 0; i < country_number; i++)
         {
+            int median_key;
+
+            int it=0;
+            while (true)
+            {
+                if (median[i][max_key[i] / 2 + it].size() != 0)
+                {
+                    median_key = max_key[i] / 2 + it;
+                    break;
+                }
+                if (median[i][max_key[i] / 2 - it].size() != 0)
+                {
+                    median_key = max_key[i] / 2 - it;
+                    break;
+                }
+                it++;
+            }
+
             std::cout << "|" << count[i] << "|";
-            std::cout <<  median[i][median[i].size()/2] << "\t|";
+            std::cout <<  median[i][median_key][median[i][median_key].size()/2] << "\t|";
             next_data_mean;
         }
     }
@@ -110,17 +132,21 @@ public:
     void go_friquent_value(int it)
     {
         double value=jsonData["Valute"][count[it]]["Value"];
-        median[it].push_back(value);
+        int key= jsonData["Valute"][count[it]]["Value"];
+        
+        if (median[it][key].size() == 0 && max_key[it]<key)
+            max_key[it] = key;
 
-        int i = median[it].size()-2;
+        median[it][key].push_back(value);
 
-        while ( i>0 && value < median[it][i])
+        int i = median[it][key].size() - 2;
+
+        while ( i>0 && value < median[it][key][i])
         {
-            median[it][i + 1] = median[it][i];
+            median[it][key][i + 1] = median[it][key][i];
             i--;
         }
-
-        median[it][i + 1] = value;
+        median[it][key][i + 1] = value;
     }
 };
 
@@ -188,33 +214,33 @@ int main() {
 
     while (true)
     {
-    CURL* curl = curl_easy_init();
+        CURL* curl = curl_easy_init();
 
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-    curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+        curl_easy_setopt(curl, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
 
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 
-    long httpCode(0);
-    std::unique_ptr<std::string> httpData(new std::string());
+        long httpCode(0);
+        std::unique_ptr<std::string> httpData(new std::string());
 
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
 
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
 
-    curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
-    curl_easy_cleanup(curl);
+        curl_easy_perform(curl);
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+        curl_easy_cleanup(curl);
 
-    jsonData = json::parse(httpData->begin(), httpData->end());
+        jsonData = json::parse(httpData->begin(), httpData->end());
 
-    std::cout << "Press 'ESC' to end.\n";
-    print_data();
-    waiting(10);
-    system("cls");
+        std::cout << "Press 'ESC' to end.\n";
+        print_data();
+        waiting(10);
+        system("cls");
     }
 
     return 0;
