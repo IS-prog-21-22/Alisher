@@ -11,10 +11,18 @@ private:
     void fixed()
     {
         std::vector <int> returned;
+        bool flag=true;
         for (int i=0; i<arr.size(); i++)
-            if (arr[i]!=0)
+        {
+            if (arr[i]==0 && flag)
+                continue;
+            else
+            {
+                flag=false;
                 returned.push_back(arr[i]);
-            else break;
+            }
+        }
+
         arr=returned;
     }
 
@@ -30,12 +38,7 @@ public:
             arr.push_back(*ptr);
             ptr++;
         }
-    }
-
-    polynom (int size)
-    {
-        arr.resize(size, 0);
-    }
+    }   
 
     polynom (const polynom &other)
     {
