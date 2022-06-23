@@ -14,6 +14,7 @@ private:
         for (int i=0; i<arr.size(); i++)
             if (arr[i]!=0)
                 returned.push_back(arr[i]);
+            else break;
         arr=returned;
     }
 
@@ -46,7 +47,7 @@ public:
         arr=other;
     }
 
-    std::vector <int> get()
+    std::vector <int> get() const
     {
         return arr;
     }
@@ -56,7 +57,7 @@ public:
         arr.push_back(data);
     }
 
-    int get_size()
+    int get_size() const
     {
         return arr.size();
     }
@@ -106,6 +107,8 @@ public:
 
             arr=new_arr;
         }
+
+        fixed();
     }
 
     polynom operator + (const polynom &other)
@@ -158,13 +161,13 @@ public:
         int rsize = arr.size();
         int osize = other.arr.size();
 
-        polynom returned(rsize+osize-1);
+        std::vector <int> ret(rsize+osize-1, 0);
         
         for (int i=0; i<rsize; i++)
             for (int j=0; j<osize; j++)
-                returned[i+j]+=arr[i]*other.arr[j];
-
+                ret[i+j]+=arr[i]*other.arr[j];
         
+        polynom returned(ret);
         return returned;
     }
 
@@ -181,10 +184,10 @@ public:
         return returned;
     }
 
-    int& operator [] (int i)
+    int operator [] (unsigned int i) const 
     {
         if (i>=arr.size())
-            throw std::out_of_range("Index more for polynom size.");
+            return 0;
         return arr[i];
     } 
 
