@@ -1,13 +1,21 @@
 #include <iostream>
-#include "polynom.h"
+#include "polynom.hpp"
+#include <fstream>
 
-using namespace std;
+
 int main()
 {
-    vector<int> arr (3, 2);
-    polynom arr1(3), arr2;
-    arr1.push(3);
-    arr2=arr;
-    std::cout << arr1;
+    std::ifstream fin ("in.txt");
+    std::ofstream fout ("out.txt");
+
+    polynom p1;
+    polynom p2;
+
+    fin >> p1;
+    fin >> p2;
+
+    fout <<"(" << p1 << ") * (" << p2 << ")" << " =\n";
+    fout << p1*p2;
+     
     return 0;
 }
